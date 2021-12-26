@@ -16,7 +16,8 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
+	"log"
+	"strconv"
 
 	"github.com/spf13/cobra"
 )
@@ -24,28 +25,29 @@ import (
 // divCmd represents the div command
 var divCmd = &cobra.Command{
 	Use:   "div",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "",
+	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("div called")
+		var result float64
+
+		dividend, err := strconv.ParseFloat(args[0], 64)
+		divisor, err := strconv.ParseFloat(args[1], 64)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		result = dividend / divisor
+
+		if result < 0 {
+			log.Fatalf("failed to divide %f with %f result: %f", dividend, divisor, result)
+		}
+
+		log.Printf("result: %f", result)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(divCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// divCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// divCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
